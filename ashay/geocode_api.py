@@ -33,8 +33,8 @@ json_data = requests.get(url, params=parameters).json()
 
 f = open('out.txt', 'w')
 
-min_obj= min(json_data["prices"],key= lambda ev:ev['high_estimate'])
+min_obj= min(json_data["prices"],key= lambda ev:ev['low_estimate'])
 resp = json.dumps(json_data['prices'][0]['estimate'], sort_keys=True, indent=4)
-print ('estimated price for uber pool : '+resp)
+print ('Estimated Lowest price for uber : '+resp)
 
 f.close()
