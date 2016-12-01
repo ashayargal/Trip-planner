@@ -1,10 +1,12 @@
-
 from flask import Flask, request, flash, url_for, redirect, render_template,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_api import status
 from sqlalchemy.inspection import inspect
 from flaskext.mysql import MySQL
+from sqlalchemy import exc
+from sqlalchemy.orm.exc import NoResultFound
 import time
+import requests
 
 
 
@@ -32,6 +34,7 @@ db=SQLAlchemy(app)
 #				engine=sqlalchemy.create_engine('mysql+pymysql://root:admin@172.17.0.2/cmpe273')  
 #				engine.execute("CREATE DATABASE IF NOT EXISTS %s "%("expenses")) 
 				#engine.execute(query)
+geocode_url= 'http://maps.google.com/maps/api/geocode/json'
 
 class Serializer(object):
 	@staticmethod
@@ -49,12 +52,14 @@ class locations(db.Model):
     city=db.Column('city',db.String(20))
     state=db.Column('state',db.String(4))
     zip=db.Column('zip',db.String(6))
+    lat=db.Column('latitude',db.Numeric(asdecimal=False))
+    lon=db.Column('longitude',db.Numeric(asdecimal=False))
 
     def serialize(self):
             d = Serializer.serialize(self)
             return d
 
-    def __init__(self,name,address,city,state,zip):
+    def __init__(self,name,address,city,state,zip,lat,lon):
         if name is not None:
                 self.name= name
         if address is not None:
@@ -65,6 +70,11 @@ class locations(db.Model):
                 self.state=state
         if zip is not None:
                 self.zip=zip
+        if lat is not None:
+                self.lat=lat
+        if lon is not None:
+                self.lon=lon
+    
 
 	
     @app.route('/locations',methods=['POST'])
@@ -73,58 +83,76 @@ class locations(db.Model):
                 #args=request.args
                 args=request.get_json(force=True)
                 #args=request.data
-                location=locations(name=args.get('name'),address=args.get('address'),city=args.get('city'),state=args.get('state'),zip=args.get('zip'))
+
+                pos= getPosition(args)
+
+                location=locations(name=args.get('name'),address=args.get('address'),city=args.get('city'),state=args.get('state'),zip=args.get('zip'),lat=pos['lat'],lon=pos['lng'])
                 db.session.add(location)
                 db.session.commit()
                 return jsonify(location.serialize()),status.HTTP_201_CREATED,{'Content-Type': 'application/json'}
 
-    @app.route('/location/<int:location_id>', methods = ['PUT'])
+    @app.route('/locations/<int:location_id>', methods = ['PUT'])
     def edit_location(location_id):
+            try:
                 args=request.get_json(force=True)
+                pos= getPosition(args)
+              
                 old_location=locations.query.filter_by(id = location_id).first()
-                if(old_location is None):
-                    return '',status.HTTP_404_NOT_FOUND,{'Content-Type': 'application/json'}
-                else:
-                    new_location=locations(name=args.get('name'),address=args.get('address'),city=args.get('city'),state=args.get('state'),zip=args.get('zip'))
-                    
-                    copy_location(old_location, new_location)
+                new_location=locations(name=args.get('name'),address=args.get('address'),city=args.get('city'),state=args.get('state'),zip=args.get('zip'),lat=pos['lat'],lon=pos['lng'])
+                copy_location(old_location, new_location)
+                db.session.commit()
+                return '',status.HTTP_202_ACCEPTED,{'Content-Type': 'application/json'}
+            except AttributeError:
+                return 'No such location found',status.HTTP_404_NOT_FOUND,{'Content-Type': 'application/json'}
 
-                    db.session.commit()
-                    return '',status.HTTP_202_ACCEPTED,{'Content-Type': 'application/json'}
 
     @app.route('/locations/<int:location_id>', methods = ['DELETE'])
     def delete_location(location_id):
-
-                location=locations.query.filter_by(id = location_id).first()
-                if(location is None):
-                    return '',status.HTTP_404_NOT_FOUND,{'Content-Type': 'application/json'}
-                else: 
-                    db.session.delete(location)
-                    db.session.commit()
-                    return '',status.HTTP_204_NO_CONTENT,{'Content-Type': 'application/json'}
+            try:
+                location=locations.query.filter_by(id = location_id)
+                db.session.delete(location.first())
+                db.session.commit()
+                return '',status.HTTP_204_NO_CONTENT,{'Content-Type': 'application/json'}
+            except exc.SQLAlchemyError:
+                    return 'No such location found',status.HTTP_404_NOT_FOUND,{'Content-Type': 'application/json'}
 
     @app.route('/locations/<int:location_id>',methods=['GET'])
     def show_one(location_id):
-
+            try:
         #return render_template('show_one.html',expenses=expenses.query.filter_by(id=expense_id))
                 location=locations.query.filter_by(id=location_id).first()
-                if(location is None):
-                    return jsonify(location),status.HTTP_404_NOT_FOUND,{'Content-Type': 'application/json'}
-                else:
-                    return jsonify(Serializer.serialize(location)),status.HTTP_200_OK,{'Content-Type': 'application/json'}
+                return jsonify(Serializer.serialize(location)),status.HTTP_200_OK,{'Content-Type': 'application/json'}
+            except exc.SQLAlchemyError:
+                return 'No such location found',status.HTTP_404_NOT_FOUND,{'Content-Type': 'application/json'}
 
-    def copy_location(old_location,new_location):
-            if new_location.name is not None:
-                    old_location.name= new_location.name
-            if new_location.address is not None:
-                    old_location.address=new_location.address
-            if new_location.city is not None:
-                    old_location.city=new_location.city
-            if new_location.state is not None:
-                    old_location.state=new_location.state
-            if new_location.zip is not None:
-                    old_location.zip=new_location.zip
-            
+def copy_location(old_location,new_location):
+    if new_location.name is not None:
+            old_location.name= new_location.name
+    if new_location.address is not None:
+            old_location.address=new_location.address
+    if new_location.city is not None:
+            old_location.city=new_location.city
+    if new_location.state is not None:
+            old_location.state=new_location.state
+    if new_location.zip is not None:
+            old_location.zip=new_location.zip
+    if new_location.lat is not None:
+            old_location.lat=new_location.lat
+    if new_location.lon is not None:
+            old_location.lon=new_location.lon
+
+def getPosition(args):
+    address=args.get('address')+args.get('city')+args.get('state')+args.get('zip')
+                
+    parameters = {
+        'address': address,
+        'sensor': 'false'
+    }
+
+    response = requests.get(geocode_url, params=parameters).json()
+    pos= response['results'][0]['geometry']['location']
+
+    return pos        
 
 if __name__ == "__main__":
 	#time.sleep(120)

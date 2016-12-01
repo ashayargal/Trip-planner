@@ -6,14 +6,22 @@ CREATE TABLE locations (  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 						  address VARCHAR(50),
 						  city VARCHAR(20),
 						  state VARCHAR(4),
-						  zip VARCHAR(6)
-                       );
+						  zip VARCHAR(6),
+						  latitude DECIMAL(15,10),
+						  longitude DECIMAL(15,10)
+					   );
 
-INSERT INTO `locations` (`name`, `address`, `city`, `state`,`zip`) 
-VALUES ('Home2','939 W El Camino Real, Mountain View, CA','San Jose','CA','94040');
+CREATE TABLE trips (  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+						  name VARCHAR(50), 
+						  location_id INT,
+						  is_start BOOLEAN,
+						  is_end BOOLEAN,
+						  FOREIGN KEY (location_id)
+						  REFERENCES locations(id)
+						  ON DELETE CASCADE
+					   );
 
-INSERT INTO `locations` (`name`, `address`, `city`, `state`,`zip`) 
-VALUES ('Home','754, The Alameda','San Jose','CA','95126');
 
+use googlemaps;
 Select * from locations;
 
