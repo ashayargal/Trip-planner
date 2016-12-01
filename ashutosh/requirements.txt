@@ -1,0 +1,6 @@
+flask
+flask_sqlalchemy
+flask_api
+flask_mysql
+sqlalchemy
+pymysql
