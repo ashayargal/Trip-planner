@@ -1,4 +1,80 @@
+C:\Python27\python.exe C:/Users/ashay/Desktop/Development/map/google/google.py
+*** trip 1 ***
 Starting location : 1600 Amphitheatre Parkway, Mountain View, CA
+final destination : 754 The Alameda, San Jose, CA 95126
+{
+    "providers": [
+        {
+            "name": "POOL", 
+            "total_duration": 1080, 
+            "duration_unit": "seconds", 
+            "distance_unit": "mile", 
+            "maximum_costs_by_cheapest_car_types": 21, 
+            "total_distance": 14.33, 
+            "currency_code": "USD"
+        }, 
+        {
+            "name": "lyft_line", 
+            "total_duration": 1050, 
+            "duration_unit": "seconds", 
+            "distance_unit": "mile", 
+            "maximum_costs_by_cheapest_car_types": 18.93, 
+            "total_distance": 14.29, 
+            "currency_code": "USD"
+        }
+    ]
+}
+*** trip 2 ***
+Starting location : 754 The Alameda, San Jose, CA 95126
+final destination : 55 River Oaks Pl #70, San Jose, CA 95134
+{
+    "providers": [
+        {
+            "name": "uberX", 
+            "total_duration": 780, 
+            "duration_unit": "seconds", 
+            "distance_unit": "mile", 
+            "maximum_costs_by_cheapest_car_types": 17, 
+            "total_distance": 6.55, 
+            "currency_code": "USD"
+        }, 
+        {
+            "name": "lyft_line", 
+            "total_duration": 799, 
+            "duration_unit": "seconds", 
+            "distance_unit": "mile", 
+            "maximum_costs_by_cheapest_car_types": 12.0, 
+            "total_distance": 6.98, 
+            "currency_code": "USD"
+        }
+    ]
+}
+*** trip 3 ***
+Starting location : 55 River Oaks Pl #70, San Jose, CA 95134
 final destination : san jose state university
-estimated price for lyft line : $21.26-21.26
-estimated price for uber pool : "$8-10"
+{
+    "providers": [
+        {
+            "name": "POOL", 
+            "total_duration": 840, 
+            "duration_unit": "seconds", 
+            "distance_unit": "mile", 
+            "maximum_costs_by_cheapest_car_types": 15, 
+            "total_distance": 7.24, 
+            "currency_code": "USD"
+        }, 
+        {
+            "name": "lyft_line", 
+            "total_duration": 868, 
+            "duration_unit": "seconds", 
+            "distance_unit": "mile", 
+            "maximum_costs_by_cheapest_car_types": 13.17, 
+            "total_distance": 8.2, 
+            "currency_code": "USD"
+        }
+    ]
+}
+total cost via uber is $53 and the distance is 28.12 miles. The journey will take 45 minutes
+total cost via lyft is $44.1 and the distance is 29.47 miles. The journey will take 45 minutes
+
+Process finished with exit code 0
