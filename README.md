@@ -1,8 +1,8 @@
 # 273project
 uber-lyft comparision
 
-Instructions:
+# Instructions:
 
-Create db and tables
-Run location service on localhost:5000/
-Run trips service on localhost:5001/
+* Create db and tables
+* Run location service on localhost:5000/
+* Run trips service on localhost:5001/
