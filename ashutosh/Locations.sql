@@ -21,6 +21,21 @@ CREATE TABLE trips (  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 						  ON DELETE CASCADE
 					   );
 
+CREATE TABLE provider_estimate ( id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+						  name VARCHAR(50),
+						  trip_id INT,
+						  total_costs_by_cheapest_car_type DECIMAL(10,4),
+						  currency_code VARCHAR(6),
+						  total_duration INT,
+						  duration_unit VARCHAR(10),
+						  total_distance INT,
+						  distance_unit VARCHAR(10),
+						  FOREIGN KEY (trip_id)
+						  REFERENCES trips(id)
+						  ON DELETE CASCADE
+					   );
+
+
 
 use googlemaps;
 Select * from locations;
