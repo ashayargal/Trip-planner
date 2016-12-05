@@ -44,7 +44,7 @@
                     <a href="login.php">Login</a>
                 </li>
                 <li>
-                    <a href="../../ashutosh/planTrip.php">Plan Your Trip</a>
+                    <a href="planTrip.php">Plan Your Trip</a>
                 </li>
                 <li>
                     <a href="#">About</a>
@@ -68,7 +68,7 @@
 
             <div id="" class="" style="margin-left:15px;width:500px;">
               <span>Add location</span>
-            <button type="button" onclick="window.location.href='../ashutosh/planTripDetail.php'" class="btn btn-success" style="margin-left:-88px;margin-bottom:100px;">Next >> </button>
+            <button type="button" onclick="window.location.href='planTripDetail.php'" class="btn btn-success" style="margin-left:-88px;margin-bottom:100px;">Next >> </button>
             
             <form  id="frm1" class="frm_location init_form" style="padding-bottom:10px;padding-top:10px;">
             <div class="form-group row">

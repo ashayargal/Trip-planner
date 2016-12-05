@@ -1,0 +1,13 @@
+Database Name : twoseventhree
+
+
+CREATE TABLE userdetails
+(
+email int,
+firstname varchar(255),
+lastname varchar(255),
+address varchar(255),
+password varchar(255),
+invitationcode varchar(255),
+image varchar(255)
+);

@@ -46,7 +46,7 @@
                     <a href="login.php">Login</a>
                 </li>
                 <li>
-                    <a href="../../ashutosh/planTrip.php">Plan Your Trip</a>
+                    <a href="planTrip.php">Plan Your Trip</a>
                 </li>
                 <li>
                     <a href="#">About</a>
@@ -238,17 +238,7 @@ $.ajax({
 
 }
 
-
-
-
 }
-
-
-
-
-
-
-
   });
 
     </script>
