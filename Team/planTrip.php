@@ -131,7 +131,37 @@
 
     <button type="submit" id="btnSubmit" class="btn btn-primary">Submit</button>
 
+    <a href="PlanTripDetail.php" id="btnNext" class="btn btn-info">Next</button>
+
 </form>
+</div>
+<div id="bottom" style="padding-left:20%;">
+<div id="photo" class="wd50">
+<div><h2>Recent photos</h2></div>
+</div>
+<div id="weather" class="wd50">
+    <div><h2>Weather</h2></div>
+<div class="form-group-row">
+        <label class="col-xs-2 col-form-label">Temperature</label>
+        <div class="col-xs-10">
+            <label class="col-xs-10 col-form-label" id="lblTemp"></label>
+        </div>
+</div>
+
+<div class="form-group-row">
+        <label class="col-xs-2 col-form-label">Humidity</label>
+        <div class="col-xs-10">
+            <label class="col-xs-10 col-form-label" id="lblHumidity"></label>
+        </div>
+</div>
+
+<div class="form-group-row">
+        <label class="col-xs-2 col-form-label">Weather Report</label>
+        <div class="col-xs-10">
+            <label class="col-xs-10 col-form-label" id="lblStatus"></label>
+        </div>
+</div>
+
 </div>
 <script src="js/jquery.js"></script>
 
@@ -143,7 +173,7 @@
 async defer></script>
 
 <script>
-var placeSearch, autocomplete;
+var placeSearch, autocomplete,latitude,longitude;
 var componentForm = {
     street_number: 'short_name',
     route: 'long_name',
@@ -194,6 +224,7 @@ function geolocate() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
+          
             var circle = new google.maps.Circle({
                 center: geolocation,
                 radius: position.coords.accuracy
@@ -205,7 +236,7 @@ function geolocate() {
 
 
 $(document).ready(function () {
-
+$('#bottom').hide();    
 $('#frmLocation').on('keyup keypress', function(e) {
   var keyCode = e.keyCode || e.which;
   if (keyCode === 13) { 
@@ -215,6 +246,77 @@ $('#frmLocation').on('keyup keypress', function(e) {
   }
 });
 
+    function getPic(msg){
+     console.log('Inside pic');
+     $.support.cors = true;
+        $.ajax({
+            type: "POST",
+            method: "POST",
+            crossdomain: true,
+            url: "https://maps.googleapis.com/maps/api/place/photo",
+            dataType: "jsonp",
+            data: {
+                'max-width':400,
+                'photoreference':msg,
+                key:'AIzaSyDM0NDXnVwJjancQ-b1oXCLvxVC9sD3NZE'
+            }
+        })
+          .done(function (msg) {
+              console.log(msg);
+              toastr.success("photo retreived","Success");
+              
+              //return false;
+          });
+
+
+    }
+
+function jsonFlickrApi() {
+  console.log(
+     "Got response from Flickr-API with the following photos: %o", 
+     response.photos
+  );
+  // Handle the response here. I.E update the DOM, trigger event handlers etc.
+}
+
+  function getPlaces(){
+      console.log('Inside places');
+      var keywords=$('#autocomplete').val().split(',')[0].trim();
+      console.log(keywords);
+      var flickrtags="architecture,places,outdoor,outdoors";
+      var flickr="flickr.photos.search";
+      var URL="https://api.flickr.com/services/rest/?method="+flickr+"&api_key=9291cf95b00d07f5e58dd85350de1199&format=json&";
+
+        var params= {
+            per_page:5,
+            text:keywords,
+            tags:flickrtags
+        }
+
+URL=URL+$.param(params)+ '&jsoncallback=?';
+
+$.getJSON(URL,function (data) {
+$('#bottom').show();
+
+       if (data.photos.photo === undefined || data.photos.photo.length == 0) {
+         toastr.error('No pictures of location found'); 
+        }
+        console.log(data.photos.photo[0]);
+        
+        $.each(data.photos.photo, function(i, rPhoto){
+         var basePhotoURL = 'https://farm' + rPhoto.farm + '.staticflickr.com/'
+                + rPhoto.server + '/' + rPhoto.id + '_' + rPhoto.secret+'.jpg';
+         console.log(basePhotoURL);
+            var img = $('<img id="dynamic">'); 
+            img.attr('src', basePhotoURL);
+            img.appendTo('#photo');
+            img.width(500);
+           if (i>5) return false;
+        });
+       
+   });
+  }
+  
     function Reset() {
       console.log('Reset is called');
         var inputs = $("input:text");
@@ -233,17 +335,14 @@ $('#frmLocation').on('keyup keypress', function(e) {
         zip = $('#postal_code').val();
         address = $('#street_number').val() + $('#route').val();
         country=$('#country').val(); 
-        console.log(name);
-        console.log(city);
-        console.log(state);
-        console.log(zip);
-        console.log(address);
-
+    
 
       var req = JSON.stringify({ name: name, state: state, zip: zip, city: city, address: address });
+       //getPlaces();
        getWeather(city,country);
         $.support.cors = true;
         $.ajax({
+ 
             type: "POST",
             method: "POST",
 
@@ -253,9 +352,10 @@ $('#frmLocation').on('keyup keypress', function(e) {
             data: req
         })
           .done(function (msg) {
-              toastr.success("Data Saved","Success");
-              Reset();
+              //toastr.success("Data Saved","Success");
+              //Reset();
               //return false;
+              
           });
 
           return false;
@@ -268,6 +368,15 @@ $('#frmLocation').on('keyup keypress', function(e) {
 
     $('#btnSubmit').click(function (e) {
         e.preventDefault();
+    
+      //Take care of aberrations
+
+      if($('#country').val().length===0 && $('#administrative_area_level_1').val().length!=0){
+
+          $('#country').val('United States');
+      }
+
+    
         if(validateForm()){
         submitForm();
         }
@@ -311,11 +420,21 @@ function getWeather(city,country){
   }).done(function (msg) {
               console.log('Get weather called');
               toastr.success('Current temperature is '+ msg.list[0].main.temp + ' F',  "Temperature");
-              toastr.success('Current humidity is '+ msg.list[0].main.humidity + ' %',  "Humidity");
-               toastr.success('Weather Report: '+ msg.list[0].weather[0].description + ' expected',  "weather Report");
+              //toastr.success('Current humidity is '+ msg.list[0].main.humidity + ' %',  "Humidity");
+               //toastr.success('Weather Report: '+ msg.list[0].weather[0].description + ' expected',  "weather Report");
+               
+               $('#lblTemp').text(msg.list[0].main.temp + ' F');
+               $('#lblHumidity').text(msg.list[0].main.humidity + ' %');
+               
+               $('#lblStatus').text('Expected '+msg.list[0].weather[0].description);
+               
                console.log(msg);
                console.log(msg.list[0]);
                console.log(msg.list[0].main.temp); 
+
+               latitude=msg.list[0].coord.lat;
+               longitude=msg.list[0].coord.lon;
+               getPlaces();
               return false;
           });
 
@@ -327,6 +446,9 @@ function getWeather(city,country){
       var country=$('#country');
       var city=$('#locality');
       var zip=$('#postal_code');
+      var state=$('#administrative_area_level_1');
+
+      
       if(address.val().length===0 || name.val().length===0 ||country.val().length===0  ){
         toastr.error('Location not validated !', 'Please fill all details');
         return false;
