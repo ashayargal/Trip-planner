@@ -16,7 +16,8 @@
 
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
-
+    <link href="css/planTrip.css" rel="stylesheet">
+    <link href="css/toastr.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -60,150 +61,285 @@
                 </li>
             </ul>
         </div>
+        </div>
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-       
+ <div style="padding-left:20%;">
+<form id="frmLocation" class="wd">
+    <div><h2>Add Location</h2></div>
+    <div class="form-group-row">
+        <label class="col-xs-2 col-form-label" for="autocomplete">Type location<span class="req">*</span></label>
+          
+        <div class="col-xs-10">
 
-
-            <div id="" class="" style="margin-left:15px;width:500px;">
-              <span>Add location</span>
-            <button type="button" onclick="window.location.href='planTripDetail.php'" class="btn btn-success" style="margin-left:-88px;margin-bottom:100px;">Next >> </button>
-            
-            <form  id="frm1" class="frm_location init_form" style="padding-bottom:10px;padding-top:10px;">
-            <div class="form-group row">
-  <label for="example-text-input" class="col-xs-2 col-form-label">Name</label>
-  <div class="col-xs-10">
-    <input class="form-control name" type="text" value="" name="name" >
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-search-input" class="col-xs-2 col-form-label">Address</label>
-  <div class="col-xs-10">
-    <input class="form-control address" type="text" value="" name="address" >
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-email-input" class="col-xs-2 col-form-label">City</label>
-  <div class="col-xs-10">
-    <input class="form-control city" type="text" value="" name="city" >
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-url-input" class="col-xs-2 col-form-label">State</label>
-  <div class="col-xs-10">
-    <input class="form-control state" type="text" value="" name="state" >
-  </div>
-</div>
-<div class="form-group row">
-  <label for="example-tel-input" class="col-xs-2 col-form-label">Zip</label>
-  <div class="col-xs-10">
-    <input class="form-control zip" type="zip" value=""  name="zip">
-  </div>
-</div>
-<button type="submit" class="btn btn-primary">Save</button>
-
-            
-            </form>
-           <button type="button" class="btn btn-secondary btnAnother">Add Another</button>
-
-
-            </div>
-        <div id="new_form">
-           
+            <input id="autocomplete" class="compulsory" placeholder="Enter your address" required onFocus="geolocate()" type="text" />
+          
         </div>
-        <!-- /#page-content-wrapper -->
-
     </div>
-    <!-- /#wrapper -->
+    <div class="form-group-row">
+        <label class="col-xs-2 col-form-label" for="street_number">Street Number</label>
+        <div class="col-xs-10">
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+            <input class="field" id="street_number" placeholder="Street Number" disabled>
+        </div>
+    </div>
+    <div class="form-group-row">
+        <label class="col-xs-2 col-form-label" for="route">Address Line 2</label>
+        <div class="col-xs-10">
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+            <input class="field" id="route" placeholder="Address Line 2" disabled>
+        </div>
+    </div>
+    <div class="form-group-row">
+        <label class="col-xs-2 col-form-label" for="locality">City</label>
+        <div class="col-xs-10">
 
-    <!-- Menu Toggle Script -->
-    <script>
+            <input class="field" id="locality" placeholder="City" disabled>
+        </div>
+    </div>
+    <div class="form-group-row">
+        <label class="col-xs-2 col-form-label" for="administrative_area_level_1">State</label>
+        <div class="col-xs-10">
 
-$(document).ready(function(){
+            <input class="field" id="administrative_area_level_1" placeholder="State" disabled>
+        </div>
+    </div>
+    <div class="form-group-row">
+        <label class="col-xs-2 col-form-label" for="postal_code">Zip</label>
+        <div class="col-xs-10">
 
-//Note: Locations Service must run on locahost:5000    
- 
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
+            <input class="field" id="postal_code" placeholder="Zip" disabled>
+        </div>
+    </div>
+    <div class="form-group-row">
+        <label class="col-xs-2 col-form-label" for="country">Country</label>
+        <div class="col-xs-10">
+
+            <input class="field" id="country" placeholder="Country" disabled>
+        </div>
+    </div>
+    <div class="form-group-row">
+        <label class="col-xs-2 col-form-label" for="name">Name<span class="req">*</span></label>
+            <div class="col-xs-10">
+
+            <input class="field compulsory"  id="name" placeholder="Name" autocomplete="off" required>
+   
+        </div>
+    </div>
+    <button type="button" id="btnReset" class="btn btn-warning">Add Another</button>
+
+    <button type="submit" id="btnSubmit" class="btn btn-primary">Submit</button>
+
+</form>
+</div>
+<script src="js/jquery.js"></script>
 
 
-    var next = 1;
-    $(".btnAnother").click(function(e){
-        e.preventDefault();
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/toastr.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCZMsdz3PpfD35Z5F2HKhjIQZzv5sdeeM&libraries=places&callback=initAutocomplete"
+async defer></script>
+
+<script>
+var placeSearch, autocomplete;
+var componentForm = {
+    street_number: 'short_name',
+    route: 'long_name',
+    locality: 'long_name',
+    administrative_area_level_1: 'short_name',
+    country: 'long_name',
+    postal_code: 'short_name'
+};
+
+function initAutocomplete() {
+    // Create the autocomplete object, restricting the search to geographical
+    // location types.
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+        { types: ['geocode'] });
+
+    // When the user selects an address from the dropdown, populate the address
+    // fields in the form.
+    autocomplete.addListener('place_changed', fillInAddress);
+}
+
+function fillInAddress() {
+    // Get the place details from the autocomplete object.
+    var place = autocomplete.getPlace();
+
+    for (var component in componentForm) {
+        document.getElementById(component).value = '';
+        //document.getElementById(component).disabled = false;
+    }
+
+    // Get each component of the address from the place details
+    // and fill the corresponding field on the form.
+    for (var i = 0; i < place.address_components.length; i++) {
+        var addressType = place.address_components[i].types[0];
+        if (componentForm[addressType]) {
+            var val = place.address_components[i][componentForm[addressType]];
+            document.getElementById(addressType).value = val;
+        }
+    }
+}
+
+// Bias the autocomplete object to the user's geographical location,
+// as supplied by the browser's 'navigator.geolocation' object.
+function geolocate() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var geolocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            var circle = new google.maps.Circle({
+                center: geolocation,
+                radius: position.coords.accuracy
+            });
+            autocomplete.setBounds(circle.getBounds());
+        });
+    }
+}
+
+
+$(document).ready(function () {
+
+$('#frmLocation').on('keyup keypress', function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) { 
+    e.preventDefault();
+    //toastr.warning('Form not submitted','Enter button disallowed');
+    return false;
+  }
+});
+
+    function Reset() {
+      console.log('Reset is called');
+        var inputs = $("input:text");
+        //location.reload();  
+        inputs.val('');
+        inputs[0].focus();
+    }
+
+    function submitForm(){
       
-        //var form=  $('#init_form').clone();
-        //$('#init_form').append(form);
+      console.log('Form is submitted');
+        event.preventDefault();
+        name = $('#name').val();
+        city = $('#locality').val();
+        state = $('#administrative_area_level_1').val();
+        zip = $('#postal_code').val();
+        address = $('#street_number').val() + $('#route').val();
+        country=$('#country').val(); 
+        console.log(name);
+        console.log(city);
+        console.log(state);
+        console.log(zip);
+        console.log(address);
 
-        var $form= $('form[id^="frm"]:last');
 
-        var num = parseInt($form.prop("id").match(/\d+/g), 10 ) +1;
+      var req = JSON.stringify({ name: name, state: state, zip: zip, city: city, address: address });
+       getWeather(city,country);
+        $.support.cors = true;
+        $.ajax({
+            type: "POST",
+            method: "POST",
 
-        var $newForm= $form.clone().prop('id', 'frm'+num );
-        $form.append($newForm);
+            crossdomain: true,
+            url: "http://localhost:5000/locations",
+            dataType: "json",
+            data: req
+        })
+          .done(function (msg) {
+              toastr.success("Data Saved","Success");
+              Reset();
+              //return false;
+          });
+
+          return false;
+    }
+
+    $('#btnReset').click(function (e) {
+        Reset();
+        
     });
-    
-    $('.frm_location').submit(function(e){
+
+    $('#btnSubmit').click(function (e) {
         e.preventDefault();
-
-    alert('Submit');
-    console.log(this);
-    name=$(this).find('.name').val();
-    city=$(this).find('.city').val();
-    state=$(this).find('.state').val();
-    zip=$(this).find('.zip').val();
-    address=$(this).find('.address').val();
-    console.log(name);
-    console.log(city);
-    console.log(state);
-    console.log(zip);
-    console.log(address);
-
-
-    
-    //$.ajax(function(){
-        //method:"POST",
-        //url:"http://localhost:5000/locations",
-        //data:{},
-        //success:function(result){
-
-        //}
-
-   // });
-
-var req=JSON.stringify(  {name: name, state:state,zip:zip,city:city,address:address});
-
-$.support.cors=true;
-$.ajax({
-  type:"POST",
-  method:"POST",
-  
-  crossdomain:true,
-  url: "http://localhost:5000/locations",
-  dataType:"json",
-  data: req
-})
-  .done(function( msg ) {
-    alert( "Data Saved: " + msg );
-  });
-
-
-
+        if(validateForm()){
+        submitForm();
+        }
     });
 
-    
+
+
+$('.compulsory').blur(function()
+{
+    if( !$(this).val() ) {
+          $(this).addClass('warning');
+    }
 });
 
 
-    </script>
+
+function getWeather(city,country){
+  if (country=="United States"){
+
+    country="us";
+  }
+  else{
+    return;
+  }
+  $.support.cors = true;
+  var url1="http://api.openweathermap.org/data/2.5/find";
+  $.ajax({
+  crossdomain: true,
+   method: 'GET',
+  url: url1,
+  headers: {
+        'Content-Type': 'application/json',
+    },
+  dataType: "jsonp",
+  data: {
+    APPID:'e978172084c5f9235c421760880d0e00',
+    q:city+","+country,
+    units:'imperial'
+    
+  }
+  }).done(function (msg) {
+              console.log('Get weather called');
+              toastr.success('Current temperature is '+ msg.list[0].main.temp + ' F',  "Temperature");
+              toastr.success('Current humidity is '+ msg.list[0].main.humidity + ' %',  "Humidity");
+               toastr.success('Weather Report: '+ msg.list[0].weather[0].description + ' expected',  "weather Report");
+               console.log(msg);
+               console.log(msg.list[0]);
+               console.log(msg.list[0].main.temp); 
+              return false;
+          });
+
+
+}
+    function validateForm(){
+      var address=$("#autocomplete");
+      var name=$('#name');
+      var country=$('#country');
+      var city=$('#locality');
+      var zip=$('#postal_code');
+      if(address.val().length===0 || name.val().length===0 ||country.val().length===0  ){
+        toastr.error('Location not validated !', 'Please fill all details');
+        return false;
+      }
+        toastr.success('Location validated !', 'From Google');
+        //getWeather(city);
+        return true;
+    }
+
+});
+
+</script>
+
 
 </body>
 
