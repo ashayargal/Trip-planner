@@ -28,14 +28,15 @@ Password: cmpe273sithuaung
 Testing locations [https://github.com/ashayargal/273project/blob/master/ashutosh/places.txt]
 
 ## to do list
- remove trips btn screen3<done>
- rename screen3<done>
- renae btn share<done>
- rename optimized path<done>
- add spinner
- remove signup/login
- adjust divs
- merge submit cost and next button
- basic styling
- testing addresses
- weather div
+ * remove trips btn screen3 --done
+ * rename screen3 --done
+ * renae btn share --done
+ * rename optimized path --done
+ * add spinner --done
+ * remove signup/login
+ * adjust divs
+ * merge submit cost and next button --error on doing so
+ * basic styling
+ * testing addresses
+ * weather div
+ * Share trip button
