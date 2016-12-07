@@ -131,7 +131,7 @@
 
     <button type="submit" id="btnSubmit" class="btn btn-primary">Submit</button>
 
-    <a href="PlanTripDetail.php" id="btnNext" class="btn btn-info">Next</button>
+    <a href="PlanTripDetail.php" id="btnNext" class="btn btn-info">Next</a>
 
 </form>
 </div>
@@ -283,7 +283,7 @@ function jsonFlickrApi() {
       console.log('Inside places');
       var keywords=$('#autocomplete').val().split(',')[0].trim();
       console.log(keywords);
-      var flickrtags="architecture,places,outdoor,outdoors";
+      var flickrtags="architecture";
       var flickr="flickr.photos.search";
       var URL="https://api.flickr.com/services/rest/?method="+flickr+"&api_key=9291cf95b00d07f5e58dd85350de1199&format=json&";
 
@@ -299,19 +299,21 @@ $.getJSON(URL,function (data) {
 $('#bottom').show();
 
        if (data.photos.photo === undefined || data.photos.photo.length == 0) {
+         $('#photo').empty();  
          toastr.error('No pictures of location found'); 
         }
         console.log(data.photos.photo[0]);
-        
+        $('#photo').empty();
         $.each(data.photos.photo, function(i, rPhoto){
          var basePhotoURL = 'https://farm' + rPhoto.farm + '.staticflickr.com/'
                 + rPhoto.server + '/' + rPhoto.id + '_' + rPhoto.secret+'.jpg';
-         console.log(basePhotoURL);
+           //console.log(basePhotoURL);
+            
             var img = $('<img id="dynamic">'); 
             img.attr('src', basePhotoURL);
             img.appendTo('#photo');
             img.width(500);
-           if (i>5) return false;
+            return false;
         });
        
    });
@@ -416,6 +418,10 @@ function getWeather(city,country){
     q:city+","+country,
     units:'imperial'
     
+  },
+  error:function(){
+      toastr.error('API call timed out');
+
   }
   }).done(function (msg) {
               console.log('Get weather called');
