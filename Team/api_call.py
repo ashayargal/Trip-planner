@@ -273,8 +273,8 @@ class locations(db.Model):
 
                 uber_json_data = requests.get(url, params=parameters).json()
 
-                min_obj = min(uber_json_data["prices"], key=lambda ev: ev['high_estimate'])
-                resp = json.dumps(uber_json_data['prices'][0]['estimate'], sort_keys=True, indent=4)
+                min_obj = uber_json_data["prices"][1]
+                resp = json.dumps(uber_json_data['prices'][1]['estimate'], sort_keys=True, indent=4)
                 total_cost_uber += min_obj["high_estimate"]
                 total_cost_lyft += lyft_max
                 total_distance_uber += min_obj['distance']
