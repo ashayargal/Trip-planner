@@ -60,7 +60,7 @@ class users(db.Model):
             
                 args=request.get_json(force=True)
                 email=args.get('email')        
-                old_user=users.query.filter_by(name = args.get('email')).first()
+                old_user=users.query.filter_by(email = args.get('email')).first()
                 #print old_location.name
                 print 1
                 if(old_user==None):
