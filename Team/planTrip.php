@@ -346,10 +346,8 @@ $('#bottom').show();
        getWeather(city,country);
         $.support.cors = true;
         $.ajax({
- 
             type: "POST",
             method: "POST",
-
             crossdomain: true,
             url: "http://localhost:5000/locations",
             dataType: "json",

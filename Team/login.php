@@ -179,9 +179,41 @@
         console.log("Image URL: " + profile.getImageUrl());
         console.log("Email: " + profile.getEmail());
 
+        var name1=profile.getName();
+        var image1=profile.getImageUrl();
+        var email1=profile.getEmail();
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
+
+        $.support.cors = true;
+       // $.post("http://localhost:5005/save_users")
+       // .done(function(msg){ 
+       //     alert('sucess');
+       // });
+       // .fail(function(xhr, status, error) {
+       //     alert('fail');
+       // });
+
+       $.ajax({
+        type: 'POST',
+        url: 'http://localhost:5005/users',
+        data: JSON.stringify({ 
+             "name": name1, 
+             "email": email1
+        }),
+        success: function(msg){
+            if(msg=='OK'){
+                sessionStorage.setItem('name', name1);
+                sessionStorage.setItem('image', image1);
+                sessionStorage.setItem('email', email1);
+                window.location.replace("http://localhost/273project/Team/PlanTrip.php");
+            }
+        }
+     });
+
+
+      
       };
 
     </script>
