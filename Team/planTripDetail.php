@@ -109,6 +109,8 @@
         <!-- /#page-content-wrapper -->
 
 <a id="btnSubmit"  class="btn btn-success" href="#">Submit</a>
+<a id="getCost" class="btn btn-info" href='#'>Get Costs</a>
+<a id="btnNext" class="btn btn-info">Next</a>
     </div>
     <!-- /#wrapper -->
 
@@ -134,11 +136,15 @@ $(document).ready(function(){
 
 $('#btnSubmit').click(function(){
 var tripname=$('#tripname').val();
+
 sendStart(tripname);
 sendEnd(tripname);
 sendOthers(tripname);
-
 });
+
+$('#getCost').click(function(){
+var tripname=$('#tripname').val();
+sendTripName(tripname);});
 
 
 $.support.cors=true;
@@ -170,6 +176,16 @@ var option2=option.clone();
 }
 
 });
+$('#btnNext').click(function(){
+var tripname=$('#tripname').val();
+
+function myJavascriptFunction() { 
+  var javascriptVariable = tripname;
+  window.location.href = "screen3.php?name=" + javascriptVariable; 
+}
+myJavascriptFunction();
+
+});
 
 function sendStart(tripname){
 var id=$( "#start" ).val();
@@ -188,6 +204,27 @@ $.ajax({
 })
   .done(function( msg ) {
     alert( "Data Saved: " + msg );
+  });
+
+
+}
+
+function sendTripName(tripname){
+
+var req=JSON.stringify(  {name: tripname});
+
+$.support.cors=true;
+$.ajax({
+  type:"POST",
+  method:"POST",
+  
+  crossdomain:true,
+  url: "http://localhost:5002/trips",
+  dataType:"json",
+  data: req
+})
+  .done(function( msg ) {
+    alert( "Database populated with costs" );
   });
 
 

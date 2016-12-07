@@ -18,7 +18,7 @@ CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_DB'] = 'googlemaps'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@localhost/googlemaps'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root@localhost/googlemaps'
 
 #app.config['SECRET_KEY']='ash'
 db=SQLAlchemy(app)
@@ -47,7 +47,7 @@ class locations(db.Model):
     latitude=db.Column('latitude',db.Numeric(asdecimal=False))
     longitude=db.Column('longitude',db.Numeric(asdecimal=False))
     trip_order=db.Column('trip_order',db.Integer)
-    trip_name=db.Column('trip_name',db.String(45))   
+    trip_name=db.Column('trip_name',db.String(45))
 
     def serialize(self):
             d = Serializer.serialize(self)

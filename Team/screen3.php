@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <?php
 //Step1
+ $trip_name = $_GET['name'];
+ 
  $db = mysqli_connect('localhost','root','','googlemaps')
  or die('Error connecting to MySQL server.');
  $query = "SELECT * FROM provider_estimate";
 mysqli_query($db, $query) or die('Error querying database.');
 $trip = mysqli_query($db, $query);
 $row = mysqli_fetch_array($trip);
-$trip_name = 'sanjose'
 ?>
 <html lang="en">
 
 <head>
+<script>
+if (sessionStorage.getItem("trip") != null) {
+            var trip = sessionStorage.getItem("trip"); 
+            //alert(sessionStorage.getItem("image"));
+            
+}
 
+</script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
@@ -73,6 +81,7 @@ $trip_name = 'sanjose'
         <!-- /#sidebar-wrapper -->
 
 <?php
+
     $con=mysqli_connect("localhost","root","","googlemaps");
 // Check connection
 if (mysqli_connect_errno())
@@ -100,9 +109,12 @@ $waypoint = '';
 
 for($i = 0;$i < count($complete_trip); $i++){
     $complete_trip[$i] = str_replace(' ','+',$complete_trip[$i]);
+    if(count($waypoint)==0){$waypoint = 'None';}
+    else{
     $waypoint = $waypoint . $complete_trip[$i];
     if($i < count($complete_trip)-1){
         $waypoint = $waypoint . "|";
+    }
     }
 } 
 ?>
