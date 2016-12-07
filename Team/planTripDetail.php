@@ -181,7 +181,7 @@ var tripname=$('#tripname').val();
 
 function myJavascriptFunction() { 
   var javascriptVariable = tripname;
-  window.location.href = "screen3.php?name=" + javascriptVariable; 
+  window.location.href = "itinerary.php?name=" + javascriptVariable; 
 }
 myJavascriptFunction();
 
