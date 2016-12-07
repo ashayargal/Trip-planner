@@ -23,7 +23,7 @@
 <body>
 
     <div id="wrapper">
-
+        
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -66,6 +66,7 @@
 
         <!-- Page Content -->
  <div style="padding-left:20%;">
+<div id="profile" style="position:fixed; top:0;right:0;float: right;width: 80px;height: 71px;"></div> 
 <form id="frmLocation" class="wd">
     <div><h2>Add Location</h2></div>
     <div class="form-group-row">
@@ -236,7 +237,22 @@ function geolocate() {
 
 
 $(document).ready(function () {
-$('#bottom').hide();    
+$('#bottom').hide();  
+
+if (sessionStorage.getItem("image") != null) {
+            var img = $('<img id="profilePic">'); 
+            //alert(sessionStorage.getItem("image"));
+            img.attr('src', sessionStorage.getItem("image"));
+            img.appendTo('#profile');
+            img.css({
+            'width' : '100%',
+            'height' : '100%'
+            });
+
+}
+
+
+
 $('#frmLocation').on('keyup keypress', function(e) {
   var keyCode = e.keyCode || e.which;
   if (keyCode === 13) { 
@@ -346,10 +362,8 @@ $('#bottom').show();
        getWeather(city,country);
         $.support.cors = true;
         $.ajax({
- 
             type: "POST",
             method: "POST",
-
             crossdomain: true,
             url: "http://localhost:5000/locations",
             dataType: "json",

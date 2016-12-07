@@ -1,4 +1,4 @@
-from flask import Flask, request, flash, url_for, redirect, render_template,jsonify
+from flask import Flask, request, flash, url_for, redirect, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_api import status
 from sqlalchemy.inspection import inspect
@@ -17,10 +17,8 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
-
 app.config['MYSQL_DATABASE_DB'] = 'googlemaps1'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@localhost/googlemaps1'
-
 
 #app.config['SECRET_KEY']='ash'
 db=SQLAlchemy(app)
@@ -39,63 +37,38 @@ class Serializer(object):
 	def serialize_list(l):
 		return [m.serialize() for m in l]
 
-class locations(db.Model):
+class users(db.Model):
     id=db.Column('id',db.Integer, autoincrement=True,primary_key=True)
     name=db.Column('name',db.String(50))
-    address=db.Column('address',db.String(100))
-    city=db.Column('city',db.String(20))
-    state=db.Column('state',db.String(10))
-    zip=db.Column('zip',db.String(6))
-    latitude=db.Column('latitude',db.Numeric(asdecimal=False))
-    longitude=db.Column('longitude',db.Numeric(asdecimal=False))
-    trip_order=db.Column('trip_order',db.Integer)
-    trip_name=db.Column('trip_name',db.String(45))
-
+    image=db.Column('image',db.String(100))
+    email=db.Column('email',db.String(50))
+    
     def serialize(self):
             d = Serializer.serialize(self)
             return d
 
-    def __init__(self,name,address,city,state,zip,latitude,longitude,trip_order,trip_name):
+    def __init__(self,name,image,email):
         if name is not None:
                 self.name= name
-        if address is not None:
-                    self.address=address
-        if city is not None:
-                self.city=city
-        if state is not None:
-                self.state=state
-        if zip is not None:
-                self.zip=zip
-        if latitude is not None:
-                self.latitude=latitude
-        if longitude is not None:
-                self.longitude=longitude
-        if trip_order is not None:
-                self.trip_order=trip_order
-        if trip_name is not None:
-                self.trip_name=trip_name
-
-    @app.route('/trips',methods=['POST'])
-    def save_locations():
+        if image is not None:
+                self.image=image
+        if email is not None:
+                self.email=email
+        
+    @app.route('/users',methods=['POST','OPTIONS'])
+    def save_users():
             
                 args=request.get_json(force=True)
-            
-                name= args.get('name')
-                #print name
-
-                location_id= args.get('location_id')
-                print 'Name:' + name
-                print 'Location:'+ location_id
-
-                old_location=locations.query.filter_by(id = int(location_id)).first()
+                email=args.get('email')        
+                old_user=users.query.filter_by(email = args.get('email')).first()
                 #print old_location.name
-                new_location=locations(name=None,address=None,city=None,state=None,zip=None,latitude=None,longitude=None,trip_order=1,trip_name=name)
-                #print new_location.trip_name
-                
-                copy_location(old_location,new_location)
-                #print old_location.name
-                print old_location.trip_name
-                db.session.commit()
+                print 1
+                if(old_user==None):
+                    print 2
+                    new_user=users(name=args.get('name'),image=args.get('image'),email=args.get('email'))
+                    db.session.add(new_user)
+                    db.session.commit()
+                print 3    
                 return jsonify('OK'),status.HTTP_201_CREATED,{'Content-Type': 'application/json'}
 
     @app.route('/trips/<int:trip_id>', methods = ['PUT'])
@@ -143,4 +116,4 @@ if __name__ == "__main__":
 	#time.sleep(120)
 #	CreateDB()    	
 	db.create_all()
-	app.run(debug=True,host='localhost',port=5001)
+	app.run(debug=True,host='localhost',port=5005)
