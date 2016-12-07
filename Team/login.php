@@ -53,19 +53,19 @@
                     <a href="login.php">Login</a>
                 </li>
                 <li>
-                    <a href="#">Plan Your Trip</a>
+                    <a href="planTrip.php">Plan Your Trip</a>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <a href="about.php">About</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a href="services.php">Services</a>
                 </li>
                 <li>
-                    <a href="#">Contact</a>
+                    <a href="contact.php">Contact</a>
                 </li>
                  <li>
-                    <a href="#">Logout</a>
+                    <a href="logout.php">Logout</a>
                 </li>
             </ul>
         </div>
@@ -169,6 +169,13 @@
     });
   }
 
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
   function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
         var profile = googleUser.getBasicProfile();
@@ -206,8 +213,13 @@
         }),
         success: function(msg){
             if(msg=='OK'){
+
+                setCookie('name',name1,1);
+                
                 sessionStorage.setItem('name', name1);
+                setCookie('image',image1,1);
                 sessionStorage.setItem('image', image1);
+                setCookie('email',email1,1);
                 sessionStorage.setItem('email', email1);
                 window.location.replace("http://localhost/273project/Team/PlanTrip.php");
             }

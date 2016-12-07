@@ -1,6 +1,11 @@
 <?php
 require 'PHPMailer/PHPMailerAutoload.php';
 
+$name=$_GET['name'];
+$email=$_GET['email'];
+$tripname=$_GET['tripname'];
+#$trip=$_GET['trip'].'?name='.$tripname;
+$trip=$_GET['trip'];
 $mail = new PHPMailer;
 
 //$mail->SMTPDebug = 3;                               // Enable verbose debug output
@@ -14,15 +19,15 @@ $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, 
 $mail->Port = 587;                                    // TCP port to connect to
 
 $mail->setFrom('uberlyfttripplanner@gmail.com', 'Mailer');
-$mail->addAddress('the.ashay.argal@gmail.com', 'Ashay Argal');     // Add a recipient
-$mail->addAddress('ashutosh.sjsu@outlook.com');               // Name is optional
+
+$mail->addAddress($email, $name); 
 
 //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
 //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 $mail->isHTML(true);                                  // Set email format to HTML
-
-$mail->Subject = '<b>Planned trip</b>';
-$mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+$temp='Hi '.$name .' , <p> This is Coders United. <p> You searched for a trip on our website. Please click <a href="'.$trip.'">here</a> for more details.<p> Happy Holidays,<p> Coders United Team';
+$mail->Subject = 'Trip Planning by Code Gladiators';
+$mail->Body    = $temp;
 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
 if(!$mail->send()) {

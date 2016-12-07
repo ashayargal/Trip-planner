@@ -3,7 +3,7 @@
 //Step1
  $trip_name = $_GET['name'];
  
- $db = mysqli_connect('localhost','root','','googlemaps')
+ $db = mysqli_connect('localhost','root','admin','googlemaps1')
  or die('Error connecting to MySQL server.');
  $query = "SELECT * FROM provider_estimate";
 mysqli_query($db, $query) or die('Error querying database.');
@@ -82,13 +82,13 @@ if (sessionStorage.getItem("trip") != null) {
 
 <?php
 
-    $con=mysqli_connect("localhost","root","","googlemaps");
+    $con=mysqli_connect("localhost","root","admin","googlemaps1");
 // Check connection
 if (mysqli_connect_errno())
 {
 echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
-$address = mysqli_query($con,"SELECT address FROM googlemaps.locations where trip_name='$trip_name' order by trip_order;");
+$address = mysqli_query($con,"SELECT address FROM googlemaps1.locations where trip_name='$trip_name' order by trip_order;");
 
 
 $complete_trip = array();
@@ -124,14 +124,7 @@ for($i = 0;$i < count($complete_trip); $i++){
     <div class="row">
          <div class="img-thumbnail col-sm-8"  style="background-color:#cfd8dc;">
          <h2>Google Map</h2>
-             <!--<iframe
-    width=100%
-    height=500
-    frameborder="1" style="border:0"
-    <!--<?php
-    // echo "src='https://www.google.com/maps/embed/v1/directions?key=AIzaSyA--9vUmlsek7U7NsjGFXkMwJRIc9bUdq0&origin={$origin}&destination={san+jose+state+university}&waypoints=54+The+Alameda,+San+Jose,+CA+95126|san+jose+state+university|447+Great+Mall+Dr,+Milpitas' allowfullscreen>"
-    ?>
-    </iframe>-->
+             
     <?php
 echo "<iframe
     width=100%
@@ -221,7 +214,9 @@ while ($row = mysqli_fetch_array($trip)) {
     }
 ?>    
     </div>
-    <button type="button" class="btn btn-success btn-block">Share via email</button>
+
+    <a type="button" id="mail" class="btn btn-success btn-block">Share via email</a>
+
 
 </div>
 
@@ -240,8 +235,43 @@ while ($row = mysqli_fetch_array($trip)) {
 
     <!-- Menu Toggle Script -->
     <script>
+function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 $(document).ready(function(){
+
+var trip= window.location.href;
+var name=getCookie('name');
+var email=getCookie('email');
+var trip_name=getParameterByName('name');
+mailUrl="http://localhost/273project/Team/mail.php"
+$('#mail').attr('href',mailUrl+"?trip="+trip+"&name="+name+"&email="+email+"&tripname="+trip_name);
+
+
 
 //Note: Locations Service must run on locahost:5000    
  
