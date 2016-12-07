@@ -9,3 +9,8 @@ uber-lyft comparision
 
 # APIs Used
 1. Open Weather Map API [http://openweathermap.org/]
+
+# Mail
+
+Mail: uberlyfttripplanner@gmail.com
+Password: cmpe273sithuaung
