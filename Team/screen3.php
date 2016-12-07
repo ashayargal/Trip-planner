@@ -65,16 +65,16 @@ if (sessionStorage.getItem("trip") != null) {
                     <a href="planTrip.php">Plan Your Trip</a>
                 </li>
                 <li>
-                    <a href="about.php">About</a>
+                    <a href="#">About</a>
                 </li>
                 <li>
-                    <a href="services.php">Services</a>
+                    <a href="#">Services</a>
                 </li>
                 <li>
-                    <a href="contact.php">Contact</a>
+                    <a href="#">Contact</a>
                 </li>
                  <li>
-                    <a href="logout.php">Logout</a>
+                    <a href="#">Logout</a>
                 </li>
             </ul>
         </div>
@@ -221,6 +221,7 @@ while ($row = mysqli_fetch_array($trip)) {
     }
 ?>    
     </div>
+    <button type="button" class="btn btn-success btn-block">Share via email</button>
 
 </div>
 
