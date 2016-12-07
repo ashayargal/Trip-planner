@@ -48,16 +48,16 @@
                     <a href="planTrip.php">Plan Your Trip</a>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <a href="about.php">About</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a href="services.php">Services</a>
                 </li>
                 <li>
-                    <a href="#">Contact</a>
+                    <a href="contact.php">Contact</a>
                 </li>
                  <li>
-                    <a href="#">Logout</a>
+                    <a href="logout.php">Logout</a>
                 </li>
             </ul>
         </div>
