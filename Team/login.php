@@ -178,9 +178,11 @@
         console.log('Family Name: ' + profile.getFamilyName());
         console.log("Image URL: " + profile.getImageUrl());
         console.log("Email: " + profile.getEmail());
-
+        var img= profile.getImageUrl();
         var name1=profile.getName();
-        var image1=profile.getImageUrl();
+        var image1=url = img.replace(/^https:\/\//i, 'http://');
+
+       
         var email1=profile.getEmail();
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
