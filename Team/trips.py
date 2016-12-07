@@ -24,7 +24,7 @@ import MySQLdb
 gmaps_directions = googlemaps.Client(key='AIzaSyDkPohgHqVLp0iaqYl7YpjgSQ6RbXViL4U')
 complete_trip = []
 
-dba = create_engine('mysql+pymysql://root@localhost/googlemaps')
+dba = create_engine('mysql+pymysql://root:admin@localhost/googlemaps1')
 dba.echo = False
 Sessi = sessionmaker(bind=dba)
 
@@ -60,8 +60,8 @@ CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 
-app.config['MYSQL_DATABASE_DB'] = 'googlemaps'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root@localhost/googlemaps'
+app.config['MYSQL_DATABASE_DB'] = 'googlemaps1'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@localhost/googlemaps1'
 
 
 #app.config['SECRET_KEY']='ash'

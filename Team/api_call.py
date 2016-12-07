@@ -26,8 +26,8 @@ import MySQLdb
 app = Flask(__name__)
 CORS(app)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'googlemaps1'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@localhost/googlemaps1'
+app.config['MYSQL_DATABASE_DB'] = 'googlemaps'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root@localhost/googlemaps'
 # app.config['SECRET_KEY']='ash'
 db = SQLAlchemy(app)
 # engine = create_engine('mysql+pymysql://root:admin@172.17.0.3/CMPE273')
@@ -40,7 +40,7 @@ gmaps = googlemaps.Client(key='AIzaSyA--9vUmlsek7U7NsjGFXkMwJRIc9bUdq0')
 gmaps_directions = googlemaps.Client(key='AIzaSyDkPohgHqVLp0iaqYl7YpjgSQ6RbXViL4U')
 complete_trip = []
 
-dba = create_engine('mysql+pymysql://root:admin@localhost/googlemaps1')
+dba = create_engine('mysql+pymysql://root@localhost/googlemaps')
 dba.echo = False
 Session = sessionmaker(bind=dba)
 
