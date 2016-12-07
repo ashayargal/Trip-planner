@@ -17,8 +17,8 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'googlemaps1'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@localhost/googlemaps1'
+app.config['MYSQL_DATABASE_DB'] = 'googlemaps'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root@localhost/googlemaps'
 
 #app.config['SECRET_KEY']='ash'
 db=SQLAlchemy(app)

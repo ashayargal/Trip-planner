@@ -18,10 +18,10 @@ CORS(app)
 
 #app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///expenses.sqlite3'
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'googlemaps1'
+app.config['MYSQL_DATABASE_DB'] = 'googlemaps'
 #app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@172.17.0.2/cmpe273'
 
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@localhost/googlemaps1'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root@localhost/googlemaps'
 
 
 #app.config['SECRET_KEY']='ash'

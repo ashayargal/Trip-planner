@@ -12,7 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 import MySQLdb
 
 # trip_id = 1
-trip_name = 'sanjose'
+trip_name = 'cali'
 
 gmaps = googlemaps.Client(key='AIzaSyA--9vUmlsek7U7NsjGFXkMwJRIc9bUdq0')
 gmaps_directions = googlemaps.Client(key='AIzaSyDkPohgHqVLp0iaqYl7YpjgSQ6RbXViL4U')
@@ -167,10 +167,11 @@ for i in range(len(complete_trip)):
         # Make a get request with the parameters.
         json_data_lyft = requests.get("https://api.lyft.com/v1/cost", params=parameters_lyft,
                                       headers=headers_lyft).json()
-        lyft_max = json.dumps(json_data_lyft['cost_estimates'][1]['estimated_cost_cents_max'], indent=4)
+        print json.dumps(json_data_lyft['cost_estimates'][2],indent=4)
+        lyft_max = json.dumps(json_data_lyft['cost_estimates'][2]['estimated_cost_cents_max'], indent=4)
         lyft_max = float(lyft_max) / 100
-
-        lyft_min = (json.dumps(json_data_lyft['cost_estimates'][1]['estimated_cost_cents_min'], indent=4))
+        print lyft_max
+        lyft_min = (json.dumps(json_data_lyft['cost_estimates'][2]['estimated_cost_cents_min'], indent=4))
         lyft_min = float(lyft_min) / 100
 
         ### uber
@@ -188,14 +189,16 @@ for i in range(len(complete_trip)):
 
         uber_json_data = requests.get(url, params=parameters).json()
 
-        min_obj = min(uber_json_data["prices"], key=lambda ev: ev['high_estimate'])
-        resp = json.dumps(uber_json_data['prices'][0]['estimate'], sort_keys=True, indent=4)
+        min_obj = uber_json_data["prices"][1]
+        # print min_obj
+        resp = json.dumps(uber_json_data['prices'][1]['estimate'], sort_keys=True, indent=4)
         total_cost_uber += min_obj["high_estimate"]
+        # print json.dumps(total_cost_uber,indent=4)
         total_cost_lyft += lyft_max
         total_distance_uber += min_obj['distance']
-        total_distance_lyft += json_data_lyft['cost_estimates'][1]['estimated_distance_miles']
+        total_distance_lyft += json_data_lyft['cost_estimates'][2]['estimated_distance_miles']
         total_time_uber += min_obj['duration']
-        total_time_lyft += json_data_lyft['cost_estimates'][1]['estimated_duration_seconds']
+        total_time_lyft += json_data_lyft['cost_estimates'][2]['estimated_duration_seconds']
 
         final = {
             "providers": [
@@ -204,13 +207,13 @@ for i in range(len(complete_trip)):
                  'total_duration': min_obj['duration'],
                  'duration_unit': 'seconds',
                  'total_distance': min_obj['distance'],
-                 'distance_unit': 'mile'}, {"name": json_data_lyft['cost_estimates'][1]['ride_type'],
+                 'distance_unit': 'mile'}, {"name": json_data_lyft['cost_estimates'][2]['ride_type'],
                                             "maximum_costs_by_cheapest_car_types": lyft_max,
-                                            'currency_code': json_data_lyft['cost_estimates'][1]['currency'],
-                                            'total_duration': json_data_lyft['cost_estimates'][1][
+                                            'currency_code': json_data_lyft['cost_estimates'][2]['currency'],
+                                            'total_duration': json_data_lyft['cost_estimates'][2][
                                                 'estimated_duration_seconds'],
                                             'duration_unit': 'seconds',
-                                            'total_distance': json_data_lyft['cost_estimates'][1][
+                                            'total_distance': json_data_lyft['cost_estimates'][2][
                                                 'estimated_distance_miles'],
                                             'distance_unit': 'mile'}]}
 

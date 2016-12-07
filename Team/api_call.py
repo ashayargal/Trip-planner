@@ -26,8 +26,8 @@ import MySQLdb
 app = Flask(__name__)
 CORS(app)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'googlemaps1'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@localhost/googlemaps1'
+app.config['MYSQL_DATABASE_DB'] = 'googlemaps'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root@localhost/googlemaps'
 # app.config['SECRET_KEY']='ash'
 db = SQLAlchemy(app)
 # engine = create_engine('mysql+pymysql://root:admin@172.17.0.3/CMPE273')
@@ -40,7 +40,7 @@ gmaps = googlemaps.Client(key='AIzaSyA--9vUmlsek7U7NsjGFXkMwJRIc9bUdq0')
 gmaps_directions = googlemaps.Client(key='AIzaSyDkPohgHqVLp0iaqYl7YpjgSQ6RbXViL4U')
 complete_trip = []
 
-dba = create_engine('mysql+pymysql://root:admin@localhost/googlemaps1')
+dba = create_engine('mysql+pymysql://root@localhost/googlemaps')
 dba.echo = False
 Session = sessionmaker(bind=dba)
 
@@ -252,10 +252,10 @@ class locations(db.Model):
                 # Make a get request with the parameters.
                 json_data_lyft = requests.get("https://api.lyft.com/v1/cost", params=parameters_lyft,
                                               headers=headers_lyft).json()
-                lyft_max = json.dumps(json_data_lyft['cost_estimates'][1]['estimated_cost_cents_max'], indent=4)
+                lyft_max = json.dumps(json_data_lyft['cost_estimates'][2]['estimated_cost_cents_max'], indent=4)
                 lyft_max = float(lyft_max) / 100
 
-                lyft_min = (json.dumps(json_data_lyft['cost_estimates'][1]['estimated_cost_cents_min'], indent=4))
+                lyft_min = (json.dumps(json_data_lyft['cost_estimates'][2]['estimated_cost_cents_min'], indent=4))
                 lyft_min = float(lyft_min) / 100
 
                 ### uber
@@ -273,14 +273,14 @@ class locations(db.Model):
 
                 uber_json_data = requests.get(url, params=parameters).json()
 
-                min_obj = min(uber_json_data["prices"], key=lambda ev: ev['high_estimate'])
-                resp = json.dumps(uber_json_data['prices'][0]['estimate'], sort_keys=True, indent=4)
+                min_obj = uber_json_data["prices"][2]
+                # resp = json.dumps(uber_json_data['prices'][0]['estimate'], sort_keys=True, indent=4)
                 total_cost_uber += min_obj["high_estimate"]
                 total_cost_lyft += lyft_max
                 total_distance_uber += min_obj['distance']
-                total_distance_lyft += json_data_lyft['cost_estimates'][1]['estimated_distance_miles']
+                total_distance_lyft += json_data_lyft['cost_estimates'][2]['estimated_distance_miles']
                 total_time_uber += min_obj['duration']
-                total_time_lyft += json_data_lyft['cost_estimates'][1]['estimated_duration_seconds']
+                total_time_lyft += json_data_lyft['cost_estimates'][2]['estimated_duration_seconds']
 
                 final = {
                     "providers": [
@@ -290,14 +290,14 @@ class locations(db.Model):
                          'total_duration': min_obj['duration'],
                          'duration_unit': 'seconds',
                          'total_distance': min_obj['distance'],
-                         'distance_unit': 'mile'}, {"name": json_data_lyft['cost_estimates'][1]['ride_type'],
+                         'distance_unit': 'mile'}, {"name": json_data_lyft['cost_estimates'][2]['ride_type'],
                                                     "maximum_costs_by_cheapest_car_types": lyft_max,
-                                                    'currency_code': json_data_lyft['cost_estimates'][1][
+                                                    'currency_code': json_data_lyft['cost_estimates'][2][
                                                         'currency'],
-                                                    'total_duration': json_data_lyft['cost_estimates'][1][
+                                                    'total_duration': json_data_lyft['cost_estimates'][2][
                                                         'estimated_duration_seconds'],
                                                     'duration_unit': 'seconds',
-                                                    'total_distance': json_data_lyft['cost_estimates'][1][
+                                                    'total_distance': json_data_lyft['cost_estimates'][2][
                                                         'estimated_distance_miles'],
                                                     'distance_unit': 'mile'}]}
 
