@@ -124,14 +124,7 @@ for($i = 0;$i < count($complete_trip); $i++){
     <div class="row">
          <div class="img-thumbnail col-sm-8"  style="background-color:#cfd8dc;">
          <h2>Google Map</h2>
-             <!--<iframe
-    width=100%
-    height=500
-    frameborder="1" style="border:0"
-    <!--<?php
-    // echo "src='https://www.google.com/maps/embed/v1/directions?key=AIzaSyA--9vUmlsek7U7NsjGFXkMwJRIc9bUdq0&origin={$origin}&destination={san+jose+state+university}&waypoints=54+The+Alameda,+San+Jose,+CA+95126|san+jose+state+university|447+Great+Mall+Dr,+Milpitas' allowfullscreen>"
-    ?>
-    </iframe>-->
+             
     <?php
 echo "<iframe
     width=100%
