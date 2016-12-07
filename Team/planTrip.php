@@ -353,7 +353,9 @@ $('#bottom').show();
         zip = $('#postal_code').val();
         address = $('#street_number').val() + $('#route').val();
         country=$('#country').val(); 
-        if(address.trim()=="")
+        
+
+        if(address.trim()=="" || address.indexOf(',')==-1)
         {
             address=$('#autocomplete').val()
         }

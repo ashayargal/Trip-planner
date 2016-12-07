@@ -169,6 +169,13 @@
     });
   }
 
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
   function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
         var profile = googleUser.getBasicProfile();
@@ -206,8 +213,13 @@
         }),
         success: function(msg){
             if(msg=='OK'){
+
+                setCookie('name',name1,1);
+                
                 sessionStorage.setItem('name', name1);
+                setCookie('image',image1,1);
                 sessionStorage.setItem('image', image1);
+                setCookie('email',email1,1);
                 sessionStorage.setItem('email', email1);
                 window.location.replace("http://localhost/273project/Team/PlanTrip.php");
             }
