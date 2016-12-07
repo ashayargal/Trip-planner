@@ -9,8 +9,8 @@
 
     $servername = "localhost";
     $username = "root";
-    $password = "password";
-    $dbname = "twoseventhree";
+    $password = "admin";
+    $dbname = "googlemaps";
     $email = $_SESSION['login_user'];
     //echo "hello";
     //echo $fusername;
