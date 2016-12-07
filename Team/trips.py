@@ -60,7 +60,7 @@ CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 
-app.config['MYSQL_DATABASE_DB'] = 'googlemaps'
+app.config['MYSQL_DATABASE_DB'] = 'googlemaps1'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root@localhost/googlemaps'
 
 

@@ -18,7 +18,7 @@
 -->
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
-    <link href="css/toastr.min.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -121,38 +121,10 @@
     <script src="js/bootstrap.min.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
 -->
-    <script src="js/spin.min.js"></script>
-<script src="js/toastr.min.js"></script>
-<script src="js/jquery.blockUI.js"></script>
 
     <!-- Menu Toggle Script -->
     <script>
 $(document).ready(function(){
-var opts = {
-  lines: 15 // The number of lines to draw
-, length: 52 // The length of each line
-, width: 24 // The line thickness
-, radius: 75 // The radius of the inner circle
-, scale: 1 // Scales overall size of the spinner
-, corners: 1 // Corner roundness (0..1)
-, color: '#000' // #rgb or #rrggbb or array of colors
-, opacity: 0.25 // Opacity of the lines
-, rotate: 0 // The rotation offset
-, direction: 1 // 1: clockwise, -1: counterclockwise
-, speed: 1 // Rounds per second
-, trail: 60 // Afterglow percentage
-, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-, zIndex: 2e9 // The z-index (defaults to 2000000000)
-, className: 'spinner' // The CSS class to assign to the spinner
-, top: '50%' // Top position relative to parent
-, left: '50%' // Left position relative to parent
-, shadow: true // Whether to render a shadow
-, hwaccel: true // Whether to use hardware acceleration
-, position: 'absolute' // Element positioning
-};
-
-var target = document.getElementById('frm1');
-var spinner = new Spinner(opts);
 
  //Note: Trips Service must run on locahost:5001    
    var postUrl="http://localhost:5001/trips";
@@ -163,22 +135,14 @@ var spinner = new Spinner(opts);
     });
 
 $('#btnSubmit').click(function(){
-   
-$.blockUI({ message: "Please wait.....", overlayCSS: { backgroundColor: '#ddd' } });
-spinner.spin(target);
-
 var tripname=$('#tripname').val();
-      
+
 sendStart(tripname);
 sendEnd(tripname);
 sendOthers(tripname);
-
 });
 
 $('#getCost').click(function(){
-  
-$.blockUI({ message: "Please wait.....", overlayCSS: { backgroundColor: '#ddd' } });
-spinner.spin(target);
 var tripname=$('#tripname').val();
 sendTripName(tripname);});
 
@@ -225,8 +189,6 @@ myJavascriptFunction();
 
 function sendStart(tripname){
 var id=$( "#start" ).val();
-//$.blockUI({ message: "Please wait.....", overlayCSS: { backgroundColor: '#ddd' } });
-//spinner.spin(target);
 
 var req=JSON.stringify(  {name: tripname, location_id:id});
 
@@ -241,7 +203,7 @@ $.ajax({
   data: req
 })
   .done(function( msg ) {
-   // alert( "Data Saved: " + msg );
+    alert( "Data Saved: " + msg );
   });
 
 
@@ -261,10 +223,7 @@ $.ajax({
   data: req
 })
   .done(function( msg ) {
-  alert( "Database populated with costs" );
-   spinner.stop();
-   $.unblockUI();
-    toastr.success("Database populated with costs","Route optimized");
+    alert( "Database populated with costs" );
   });
 
 
@@ -286,7 +245,7 @@ $.ajax({
   data: req
 })
   .done(function( msg ) {
-    //alert( "Data Saved: " + msg );
+    alert( "Data Saved: " + msg );
   });
 
 
@@ -315,11 +274,7 @@ $.ajax({
   data: req
 })
   .done(function( msg ) {
-    //alert( "Data Saved: " + msg );
-    toastr.success("Trip details saved","Trip");
-    spinner.stop();
-    $.unblockUI();
-
+    alert( "Data Saved: " + msg );
   });
 
 }

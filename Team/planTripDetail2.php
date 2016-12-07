@@ -109,21 +109,21 @@
         <!-- /#page-content-wrapper -->
 
 <a id="btnSubmit"  class="btn btn-success" href="#">Submit</a>
-<a id="getCost" class="btn btn-info" href='#'>Get Costs</a>
 <a id="btnNext" class="btn btn-info">Next</a>
     </div>
     <!-- /#wrapper -->
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
+    <script src="js/toastr.min.js"></script>
 
+    <script src="js/spin.min.js"></script>
+    <script src="js/jquery.blockUI.js"></script>
+    
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
 -->
-    <script src="js/spin.min.js"></script>
-<script src="js/toastr.min.js"></script>
-<script src="js/jquery.blockUI.js"></script>
 
     <!-- Menu Toggle Script -->
     <script>
@@ -154,6 +154,7 @@ var opts = {
 var target = document.getElementById('frm1');
 var spinner = new Spinner(opts);
 
+
  //Note: Trips Service must run on locahost:5001    
    var postUrl="http://localhost:5001/trips";
 
@@ -163,24 +164,26 @@ var spinner = new Spinner(opts);
     });
 
 $('#btnSubmit').click(function(){
-   
+
 $.blockUI({ message: "Please wait.....", overlayCSS: { backgroundColor: '#ddd' } });
 spinner.spin(target);
 
 var tripname=$('#tripname').val();
-      
-sendStart(tripname);
-sendEnd(tripname);
-sendOthers(tripname);
+$.when(sendStart(tripname),sendEnd(tripname),sendOthers(tripname)).done(function(){
+    getCost();
+});
+//sendStart(tripname);
+//sendEnd(tripname);
+//sendOthers(tripname);
 
 });
 
-$('#getCost').click(function(){
-  
-$.blockUI({ message: "Please wait.....", overlayCSS: { backgroundColor: '#ddd' } });
-spinner.spin(target);
+function getCost(){
+//alert('Get cost');
 var tripname=$('#tripname').val();
-sendTripName(tripname);});
+sendTripName(tripname);
+
+}
 
 
 $.support.cors=true;
@@ -195,23 +198,20 @@ $.ajax({
    
 var i = 0;
 for(i = 0; i < json_data.length; i++){
-
     var option = $("<option>");
-
     option.attr("value", json_data[i]["id"]);
     option.html(json_data[i]["name"]);
-
 var option1=option.clone();
 var option2=option.clone();
-
     $("#start").append(option);
     $("#end").append(option1);
     $("#others").append(option2);
 // $(".selectpicker").selectpicker();
     
 }
-
 });
+
+
 $('#btnNext').click(function(){
 var tripname=$('#tripname').val();
 
@@ -225,8 +225,6 @@ myJavascriptFunction();
 
 function sendStart(tripname){
 var id=$( "#start" ).val();
-//$.blockUI({ message: "Please wait.....", overlayCSS: { backgroundColor: '#ddd' } });
-//spinner.spin(target);
 
 var req=JSON.stringify(  {name: tripname, location_id:id});
 
@@ -261,10 +259,11 @@ $.ajax({
   data: req
 })
   .done(function( msg ) {
-  alert( "Database populated with costs" );
-   spinner.stop();
-   $.unblockUI();
-    toastr.success("Database populated with costs","Route optimized");
+   // alert('Success');
+    spinner.stop();
+    $.unblockUI();
+    toastr.success("Database populated with costs","Route optimized" );
+   
   });
 
 
@@ -286,7 +285,7 @@ $.ajax({
   data: req
 })
   .done(function( msg ) {
-    //alert( "Data Saved: " + msg );
+   // alert( "Data Saved: " + msg );
   });
 
 
@@ -315,11 +314,9 @@ $.ajax({
   data: req
 })
   .done(function( msg ) {
-    //alert( "Data Saved: " + msg );
-    toastr.success("Trip details saved","Trip");
-    spinner.stop();
-    $.unblockUI();
-
+    //if(i==arr.length){
+    
+    //}
   });
 
 }
