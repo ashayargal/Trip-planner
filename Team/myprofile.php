@@ -1,56 +1,3 @@
-<?php
-    session_start();
-    error_reporting(0);
-    //session_start();
-    //extract($_POST);
-    //$fusername = $_POST['email'];
-    //$fpassword = $_POST['password'];
-
-
-    $servername = "localhost";
-    $username = "root";
-    $password = "admin";
-    $dbname = "googlemaps";
-    $email = $_SESSION['login_user'];
-    //echo "hello";
-    //echo $fusername;
-
-    //$servername = "localhost";
-    //$username = "venkateshds";
-    //$password = "password";
-    //$dbname = "websiteuser123";
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    } 
-
-
-  
-      $sql = "select * from userdetails where email = '$email'";
-     // echo "hello world";
-      //echo "email";
-      //echo "venkateshdsmudg";
-      //echo $_SESSION['login_user'];
-        //$result = $conn->query($sql);
-        $result=mysqli_query($conn, $sql) or die(mysqli_error($conn)); 
-      if ($result->num_rows >0) 
-      {
-        //$_SESSION['login_user']=$email;
-         $row = $result->fetch_assoc();
-        //header("location: success.php");
-        //echo "welcome ".$email."";
-      }
-      else
-      {
-        echo "invalid username and password";
-      }
-
-
-    $conn->close();
-    ?>
-           
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,6 +20,7 @@
 </head>
 
 <body>
+
 
     <div id="wrapper">
 
@@ -97,19 +45,19 @@
                     <a href="login.php">Login</a>
                 </li>
                 <li>
-                    <a href="#">Plan Your Trip</a>
+                    <a href="planTrip.php">Plan Your Trip</a>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <a href="about.php">About</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a href="services.php">Services</a>
                 </li>
                 <li>
-                    <a href="#">Contact</a>
+                    <a href="contact.php">Contact</a>
                 </li>
                  <li>
-                    <a href="#">Logout</a>
+                    <a href="logout.php">Logout</a>
                 </li>
             </ul>
         </div>
@@ -119,94 +67,58 @@
        
 
 
-            
-        <div id="page-content-wrapper">
-        <div class="container">
-      <div class="row">
-      <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
-           <!--<A href="edit.html" >Edit Profile</A>
 
-        <A href="edit.html" >Logout</A>
-       <br>
-<p class=" text-info">May 05,2014,03:00 pm </p>-->
-      </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
-   
-   
-          <div class="panel panel-info" style = "margin-top: 50px">
-            <div class="panel-heading">
-              <h3 class="panel-title"><?php echo $row[firstname] ?><?php echo $row[lastname] ?></h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="<?php echo $row[image] ?>" class="img-circle img-responsive"> </div>
-                
-                <div class=" col-md-9 col-lg-9 "> 
-                  <table class="table table-user-information">
-                    <tbody>
-                      <tr>
-                        <td>Email:</td>
-                        <td><?php echo $row[email] ?></td>
-                      </tr>
-                      <tr>
-                        <td>First Name:</td>
-                        <td><?php echo $row[firstname] ?></td>
-                      </tr>
-                      <tr>
-                        <td>Last Name</td>
-                        <td><?php echo $row[lastname] ?></td>
-                      </tr>
-                   
-                         <tr>
-                            
-                        <td>Address</td>
-                        <td><?php echo $row[address] ?></td>
-                      </tr>
-                        
-                           
-                     
-                     
-                    </tbody>
-                  </table>
-                  
-                 
-                </div>
-              </div>
-            </div>
-                 <div class="panel-footer">
-                        <!--<a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
-                        <span class="pull-right">
-                            <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
-                            <a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
-                        </span>-->
-                    </div>
-            
-          </div>
+        <br><br>
+<div class="container-fluid well span6" style= "width: 50%;">
+  <div class="row-fluid" style= "width: 600px;">
+        <div class="span2" style="width:200px; float:left;"> 
+        <div id="profile" class="img-circle"></div>
         </div>
-      </div>
-    </div>
-           
+        
+        <div class="span8" style="width:300px; float:right;">
+            <h3>Profile</h3>
+
+            <h6><b>Email: </b><span id="email"></span></h6>
+            <h6><b>Full Name:</b> <span id="name"></span></h6>
+            
+            
         </div>
-        <!-- /#page-content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
-    <!-- jQuery -->
+       
+</div>
+</div>
+</div>
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+
+<script>
+
+
+
+var img = $('<img id="profilePic">'); 
+            //alert(sessionStorage.getItem("image"));
+            img.attr('src', sessionStorage.getItem("image"));
+            img.appendTo('#profile');
+            img.css({
+            'width' : '100%',
+            'height' : '100%'
+            });
+
+var email=sessionStorage.getItem('email');
+var name=sessionStorage.getItem('name');
+console.log(email);
+console.log(name);
+
+$(document).ready(function(){
+
+$('#name').text(name);
+$('#email').text(email);
+});
+
+
+</script>
     <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
-
 </body>
-
 </html>
-
