@@ -20,6 +20,7 @@ if (sessionStorage.getItem("trip") != null) {
             
 }
 
+
 </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -144,9 +145,9 @@ echo "<iframe
         <?php
 echo "<h1>Trip Name: $trip_name</h1>";
 
-$result = mysqli_query($con,"SELECT * FROM provider_estimate where name='$trip_name';");
+$result = mysqli_query($con,"SELECT * FROM provider_estimate where  name='$trip_name' and uber_cost!=0  LIMIT 1;");
 
-echo "<table class='table table-hover'>
+echo "<table  class='table table-hover'>
     <thead>
       <tr>
         <th>Provider</th>
@@ -154,7 +155,7 @@ echo "<table class='table table-hover'>
         <th>Distance (m)</th>
       </tr>
     </thead>
-    <tbody>";
+    <tbody id= 'tblCosts'>";
 
 while($row = mysqli_fetch_array($result))
 {
@@ -200,6 +201,8 @@ while ($row = mysqli_fetch_array($trip)) {
     </div>
 
     <a type="button" id="mail" class="btn btn-success btn-block">Get this trip via email</a>
+
+    <a type="button" id="mailOthers" class="btn btn-info btn-block">Share this trip</a>
 
 
 </div>
@@ -248,6 +251,7 @@ function getCookie(cname) {
 
 $(document).ready(function(){
 
+
 var trip= window.location.href;
 var name=getCookie('name');
 var email=getCookie('email');
@@ -255,7 +259,17 @@ var trip_name=getParameterByName('name');
 mailUrl="http://localhost/273project/Team/mail.php"
 $('#mail').attr('href',mailUrl+"?trip="+trip+"&name="+name+"&email="+email+"&tripname="+trip_name);
 
+$('#mailOthers').click(function() {
 
+var person = prompt("Please enter email", "");
+
+if (person != null) {
+var link=mailUrl+"?trip="+trip+"&name="+" "+"&email="+person+"&tripname="+trip_name;
+window.location.href = link;
+
+}
+
+});
 
 //Note: Locations Service must run on locahost:5000    
  
