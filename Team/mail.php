@@ -14,7 +14,7 @@ $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, 
 $mail->Port = 587;                                    // TCP port to connect to
 
 $mail->setFrom('uberlyfttripplanner@gmail.com', 'Mailer');
-$mail->addAddress('ashutoshsingh1989@gmail.com', 'Joe User');     // Add a recipient
+$mail->addAddress('the.ashay.argal@gmail.com', 'Ashay Argal');     // Add a recipient
 $mail->addAddress('ashutosh.sjsu@outlook.com');               // Name is optional
 
 //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments

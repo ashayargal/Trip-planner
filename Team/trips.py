@@ -8,7 +8,49 @@ from sqlalchemy.orm.exc import NoResultFound
 import time
 import requests
 from flask_cors import CORS, cross_origin
+import requests
+import json
+from sqlalchemy import *
+from sqlalchemy import table, column, select, true, update, insert
+import googlemaps
+from googlemaps import convert
+from sqlalchemy.orm import mapper, sessionmaker, create_session
+from flask import Flask, request, flash, url_for, redirect, render_template,jsonify
+from flask_cors import CORS, cross_origin
+from flaskext.mysql import MySQL
+from flask_sqlalchemy import SQLAlchemy
+import MySQLdb
 
+gmaps_directions = googlemaps.Client(key='AIzaSyDkPohgHqVLp0iaqYl7YpjgSQ6RbXViL4U')
+complete_trip = []
+
+dba = create_engine('mysql+pymysql://root@localhost/googlemaps')
+dba.echo = False
+Sessi = sessionmaker(bind=dba)
+
+# sessi = Session()
+metadata = MetaData(dba)
+locat = Table('locations', metadata, autoload=True)
+estimate = Table('provider_estimate', metadata, autoload=True)
+
+
+
+class Location(object):
+    pass
+
+
+class Estimate(object):
+    pass
+
+
+session = create_session()
+
+def get_addr(query,no):
+    com_trip = []
+    rs = query.execute()
+    for row in rs:
+        com_trip.append(row[no])
+    return com_trip
 
 
 #from sqlalchemy import create_engine
@@ -18,8 +60,8 @@ CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 
-app.config['MYSQL_DATABASE_DB'] = 'googlemaps1'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@localhost/googlemaps1'
+app.config['MYSQL_DATABASE_DB'] = 'googlemaps'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root@localhost/googlemaps'
 
 
 #app.config['SECRET_KEY']='ash'
@@ -96,6 +138,7 @@ class locations(db.Model):
                 #print old_location.name
                 print old_location.trip_name
                 db.session.commit()
+                optimize(name)
                 return jsonify('OK'),status.HTTP_201_CREATED,{'Content-Type': 'application/json'}
 
     @app.route('/trips/<int:trip_id>', methods = ['PUT'])
@@ -137,8 +180,102 @@ def copy_location(old_location,new_location):
             print old_location.name
             print old_location.city 
             old_location.trip_name=new_location.trip_name
-    
 
+def get_addr(query,no):
+    com_trip = []
+    rs = query.execute()
+    for row in rs:
+        com_trip.append(row[no])
+    return com_trip
+
+def optimize(trip_name):
+
+    s = locat.select(locat.c.trip_name == trip_name)
+    complete_trip = get_addr(s,2)
+    waypoints = complete_trip[:]
+    del waypoints[0]
+    del waypoints[-1]
+    # print complete_trip[0]
+    # print waypoints
+
+    # print complete_trip[len(complete_trip)-1]
+    def directions(client, origin, destination,
+                   mode=None, waypoints=None, alternatives=False, avoid=None,
+                   language=None, units=None, region=None, departure_time=None,
+                   arrival_time=None, optimize_waypoints=True, transit_mode=None,
+                   transit_routing_preference=None, traffic_model=None):
+
+        params = {
+            "origin": convert.latlng(origin),
+            "destination": convert.latlng(destination)
+        }
+
+        if mode:
+            # NOTE(broady): the mode parameter is not validated by the Maps API
+            # server. Check here to prevent silent failures.
+            if mode not in ["driving", "walking", "bicycling", "transit"]:
+                raise ValueError("Invalid travel mode.")
+            params["mode"] = mode
+
+        if waypoints:
+            waypoints = convert.location_list(waypoints)
+            if optimize_waypoints:
+                waypoints = "optimize:true|" + waypoints
+            params["waypoints"] = waypoints
+
+        if alternatives:
+            params["alternatives"] = "true"
+
+        if avoid:
+            params["avoid"] = convert.join_list("|", avoid)
+
+        if language:
+            params["language"] = language
+
+        if units:
+            params["units"] = units
+
+        if region:
+            params["region"] = region
+
+        if departure_time:
+            params["departure_time"] = convert.time(departure_time)
+
+        if arrival_time:
+            params["arrival_time"] = convert.time(arrival_time)
+
+        if departure_time and arrival_time:
+            raise ValueError("Should not specify both departure_time and"
+                             "arrival_time.")
+
+        if transit_mode:
+            params["transit_mode"] = convert.join_list("|", transit_mode)
+
+        if transit_routing_preference:
+            params["transit_routing_preference"] = transit_routing_preference
+
+        if traffic_model:
+            params["traffic_model"] = traffic_model
+
+        return client._get("/maps/api/directions/json", params)["routes"][0]['waypoint_order']
+
+    r = directions(gmaps_directions, complete_trip[0], complete_trip[len(complete_trip) - 1], waypoints=waypoints)
+    orig_addr = complete_trip[0]
+    dest_addr = complete_trip[len(complete_trip) - 1]
+
+    for i in range(len(r)):
+        r[i] += 2
+    r.insert(0,1)
+    r.append(len(r)+1)
+
+    quer = locat.select(locat.c.trip_name == trip_name)
+    locId = get_addr(quer, 0)
+    for i in range(len(locId)):
+        loc = locations.query.filter_by(id=locId[i]).first()
+        loc.trip_order = r[i]
+        print loc.trip_order,locId[i]
+        db.session.commit()
+    print r
 if __name__ == "__main__":
 	#time.sleep(120)
 #	CreateDB()    	

@@ -221,6 +221,7 @@ while ($row = mysqli_fetch_array($trip)) {
     }
 ?>    
     </div>
+    <button type="button" class="btn btn-success btn-block">Share via email</button>
 
 </div>
 
