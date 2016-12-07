@@ -337,8 +337,10 @@ $('#bottom').show();
         zip = $('#postal_code').val();
         address = $('#street_number').val() + $('#route').val();
         country=$('#country').val(); 
-    
-
+        if(address.trim()=="")
+        {
+            address=$('#autocomplete').val()
+        }
       var req = JSON.stringify({ name: name, state: state, zip: zip, city: city, address: address });
        //getPlaces();
        getWeather(city,country);

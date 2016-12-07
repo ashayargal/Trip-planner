@@ -51,9 +51,9 @@ class Serializer(object):
 class locations(db.Model):
     id=db.Column('id',db.Integer, autoincrement=True,primary_key=True)
     name=db.Column('name',db.String(50))
-    address=db.Column('address',db.String(20))
+    address=db.Column('address',db.String(100))
     city=db.Column('city',db.String(20))
-    state=db.Column('state',db.String(4))
+    state=db.Column('state',db.String(10))
     zip=db.Column('zip',db.String(6))
     lat=db.Column('latitude',db.Numeric(asdecimal=False))
     lon=db.Column('longitude',db.Numeric(asdecimal=False))
@@ -63,19 +63,12 @@ class locations(db.Model):
             return d
 
     def __init__(self,name,address,city,state,zip,lat,lon):
-        if name is not None:
                 self.name= name
-        if address is not None:
-                    self.address=address
-        if city is not None:
+                self.address=address
                 self.city=city
-        if state is not None:
                 self.state=state
-        if zip is not None:
                 self.zip=zip
-        if lat is not None:
                 self.lat=lat
-        if lon is not None:
                 self.lon=lon
     
 

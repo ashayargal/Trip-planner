@@ -107,7 +107,8 @@
 
             </div>
         <!-- /#page-content-wrapper -->
-<a id="btnSubmit" href="#">Submit</a>
+
+<a id="btnSubmit"  class="btn btn-success" href="#">Submit</a>
     </div>
     <!-- /#wrapper -->
 
@@ -173,7 +174,7 @@ var option2=option.clone();
 function sendStart(tripname){
 var id=$( "#start" ).val();
 
-var req=JSON.stringify(  {name: tripname, is_start:true,is_end:false,location_id:id});
+var req=JSON.stringify(  {name: tripname, location_id:id});
 
 $.support.cors=true;
 $.ajax({
@@ -195,7 +196,7 @@ $.ajax({
 function sendEnd(tripname){
 var id=$( "#end" ).val();
 
-var req=JSON.stringify(  {name: tripname, is_start:false,is_end:true,location_id:id});
+var req=JSON.stringify(  {name: tripname, location_id:id});
 
 $.support.cors=true;
 $.ajax({
@@ -218,9 +219,13 @@ function sendOthers(tripname){
 var arr=$( "#others" ).val();
 var i=0;
 var req;
+if(arr==null || arr.length==0){
+    return false;
+}
+
 for(i=0;i<arr.length;i++){
 
-req=JSON.stringify(  {name: tripname, is_start:false,is_end:false,location_id:arr[i]});
+req=JSON.stringify(  {name: tripname, location_id:arr[i]});
 
 $.support.cors=true;
 $.ajax({
