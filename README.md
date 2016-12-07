@@ -17,3 +17,7 @@ uber-lyft comparision
 
 Mail: uberlyfttripplanner@gmail.com
 Password: cmpe273sithuaung
+
+## Test
+
+Testing locations [https://github.com/ashayargal/273project/blob/master/ashutosh/places.txt]
