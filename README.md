@@ -28,10 +28,10 @@ Password: cmpe273sithuaung
 Testing locations [https://github.com/ashayargal/273project/blob/master/ashutosh/places.txt]
 
 ## to do list
- remove trips btn screen3
- rename screen3
- renae btn share
- rename optimized path
+ remove trips btn screen3<done>
+ rename screen3<done>
+ renae btn share<done>
+ rename optimized path<done>
  add spinner
  remove signup/login
  adjust divs
