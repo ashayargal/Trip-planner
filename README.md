@@ -25,10 +25,11 @@ uber-lyft comparision
 3. Google Auth API
 4. Google Maps Embed API
 5. Google Maps Geocoding API
-6. Google Maps Directions API
+6. Google Maps Directions API [for route optimization]
 7. Uber API
 8. Lyft API
 9. Google Maps JavaScript API [for autocompleting addresses]
+
 
 ## Libraries/Tools used
 1. jQuery
