@@ -2,14 +2,15 @@
 477 South Market Street, San Jose, CA, United States
 49 North 1st Street, San Jose, CA, United States
 23 Jackson Street, San Jose, CA, United States
-
-Pomona Avenue, San Jose, CA, United States
+109 Santa Real Avenue, Sunnyvale, CA, United States
+800 Bay Road, Redwood City, CA, United States
 Jasper Street, San Jose, CA, United States
 Poplar Street, Santa Clara, CA, United States
 Flora Vista Avenue, Santa Clara, CA, United States
+
+
+Pomona Avenue, San Jose, CA, United States
 6 Flory Dr, San Jose, CA, United States
 1010 The Alameda, San Jose, CA, United States
-109 Santa Real Avenue, Sunnyvale, CA, United States
-800 Bay Road, Redwood City, CA, United States
 
 502 South Sunnyvale Avenue, Sunnyvale, CA, United States
