@@ -28,29 +28,20 @@
     <link href="css/simple-sidebar.css" rel="stylesheet">
 </head>
 
-<body>
+<body background="images/lyft1.jpg">
 
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <div id="sidebar-wrapper">
+       <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="#">
+                    <a href="index.html">
                         Uber Lyft Trip Planner
                     </a>
                 </li>
                 <li>
-                    <a href="#">Home</a>
-                </li>
-                <li>
-                    <a href= "myprofile.php">My Profile</a>
-                </li>
-                <li>
-                    <a href="signup.php">Sign Up</a>
-                </li>
-                <li>
-                    <a href="login.php">Login</a>
+                    <a class="button btn-danger" style="color: black" href="login.php">Login</a>
                 </li>
                 <li>
                     <a href="planTrip.php">Plan Your Trip</a>
@@ -63,9 +54,6 @@
                 </li>
                 <li>
                     <a href="contact.php">Contact</a>
-                </li>
-                 <li>
-                    <a href="logout.php">Logout</a>
                 </li>
             </ul>
         </div>
@@ -94,42 +82,22 @@
                             
                         <form id="loginform" action="loginsuccess.php" method = "post" class="form-horizontal" role="form">
                                     
-                            <div style="margin-bottom: 25px" class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-username" type="text" required= "true" class="form-control" name="email" value="" placeholder=" email">                                        
-                            </div>
+                           
                                 
-                            <div style="margin-bottom: 25px" class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                        <input id="login-password"  required= "true" type="password" class="form-control" name="password" placeholder="password">
-                            </div>
-                                    
+                            
 
                                 
-                            <div class="input-group">
-                                      <div class="checkbox">
-                                        <label>
-                                          <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
-                                        </label>
-                                      </div>
-                            </div>
-
+<img src="images/google2.png" class="img-responsive">
                                 
-                                <div style="margin-top:10px" class="form-group" type="submit" value="Submit">
-                                    <!-- Button -->
-                                    
-                                    <div class="col-sm-12 controls">
-                                      <button id="btn-login" type="submit" value="Submit" action="loginsuccess.php" href= "" class="btn btn-success">Login  </button>
-                                    </div>
-                                  </div>
-                                  <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+                                
+                                  <div class="g-signin2 " data-onsuccess="onSignIn" data-theme="dark" style="height: 50px" align="center"></div>
                                 
                           
                                 <div class="form-group">
                                     <div class="col-md-12 control">
                                         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
                                             Don't have an account! 
-                                        <a href="signup.php" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                        <a href="https://accounts.google.com/signup?hl=en">
                                             Sign Up Here
                                         </a>
                                         </div>
@@ -140,8 +108,10 @@
 
 
                         </div>                     
-                    </div>  
+                    </div> 
+                     
         </div>
+        
     </div>
 
 
