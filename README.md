@@ -6,6 +6,8 @@ uber-lyft comparision
 * Create db and tables
 * Run location service on localhost:5000/
 * Run trips service on localhost:5001/
+* Run Uber & Lyft cost service on localhost:5002/
+* Run user login service on localhost:5005/
 
 ## APIs Used
 
@@ -17,6 +19,16 @@ uber-lyft comparision
 6. Google Maps Directions API
 7. Uber API
 8. Lyft API
+9. Google Maps JavaScript API [for autocompleting addresses]
+
+## Libraries/Tools used
+1. jQuery
+2. Bootstrap
+3. PHPMailer
+4. Google SMTP server
+5. Spin.js
+6. jQuery block UI
+7. Toastr
 
 ## Mail
 
@@ -39,4 +51,4 @@ Testing locations [https://github.com/ashayargal/273project/blob/master/ashutosh
  * basic styling
  * testing addresses
  * weather div
- * Share trip button
+ * Share trip button --done
