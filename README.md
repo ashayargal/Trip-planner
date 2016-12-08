@@ -9,6 +9,15 @@ uber-lyft comparision
 * Run Uber & Lyft cost service on localhost:5002/
 * Run user login service on localhost:5005/
 
+## Features
+
+1. Google Auth
+2. Locations,Services,Login,Optimization API
+3. Plan your trip
+4. Share your trip by email
+5. Get Uber,Lyft prices
+6. Get most optimized travelling path
+
 ## APIs Used
 
 1. Open Weather Map API [http://openweathermap.org/]
