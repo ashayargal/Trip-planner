@@ -276,6 +276,7 @@ class locations(db.Model):
 
                 min_obj = uber_json_data["prices"][1]
                 resp = json.dumps(uber_json_data['prices'][1]['estimate'], sort_keys=True, indent=4)
+
                 total_cost_uber += min_obj["high_estimate"]
                 total_cost_lyft += lyft_max
                 total_distance_uber += min_obj['distance']
