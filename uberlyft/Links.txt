@@ -1,0 +1,10 @@
+http://jsonprettyprint.com/
+https://github.com/gladiatorAsh/CMPE273-EnterpriseDistributedSystems/blob/master/Lab2/checkCrime.py
+https://github.com/sithu/cmpe273-fall16/blob/master/projects/project2.md
+https://lyftfarefinder.com/
+http://therideshareguy.com/lyfts-heat-maps-vs-ubers-surge-pricing-who-wins/
+https://developer.lyft.com/docs/availability-cost
+https://www.dropbox.com/sh/jz2piv9wmvwzwkd/AADarcN5jaUzC3d_AH5O0Nzka?dl=0&preview=cmpe273-greensheet.docx
+https://developer.uber.com/docs/ride-requests/references/api/v1-estimates-price-get
+https://riders.uber.com/trips
+https://developer.uber.com/dashboard/

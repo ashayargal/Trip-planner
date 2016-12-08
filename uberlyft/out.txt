@@ -1,0 +1,13 @@
+{
+    "currency_code": "USD", 
+    "display_name": "POOL", 
+    "distance": 55.09, 
+    "duration": 4140, 
+    "estimate": "$47.93", 
+    "high_estimate": 48, 
+    "localized_display_name": "POOL", 
+    "low_estimate": 47, 
+    "minimum": null, 
+    "product_id": "ee3ab307-e340-4406-b5ec-9f8c3b43075a", 
+    "surge_multiplier": 1.0
+}
