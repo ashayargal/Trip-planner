@@ -26,24 +26,15 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <div id="sidebar-wrapper">
+          <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="#">
+                    <a href="index.html">
                         Uber Lyft Trip Planner
                     </a>
                 </li>
                 <li>
-                    <a href="#">Home</a>
-                </li>
-                <li>
-                    <a href= "myprofile.php">My Profile</a>
-                </li>
-                <li>
-                    <a href="signup.php">Sign Up</a>
-                </li>
-                <li>
-                    <a href="login.php">Login</a>
+                    <a class="button btn-danger" style="color: black" href="login.php">Login</a>
                 </li>
                 <li>
                     <a href="planTrip.php">Plan Your Trip</a>
@@ -56,9 +47,6 @@
                 </li>
                 <li>
                     <a href="contact.php">Contact</a>
-                </li>
-                 <li>
-                    <a href="logout.php">Logout</a>
                 </li>
             </ul>
         </div>
