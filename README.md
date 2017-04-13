@@ -1,6 +1,9 @@
 # Project
 uber-lyft comparision
 
+![alt tag](https://github.com/ashayargal/Trip-planner/blob/master/Team/tripplanner.gif)
+
+
 ## Instructions:
 
 * Create db and tables
